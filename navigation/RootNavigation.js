@@ -1,50 +1,56 @@
-import { Notifications } from 'expo';
+import {Notifications} from 'expo';
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import {StackNavigator} from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import UserDetailsScreen from "../screens/UserDetailsScreen";
 
 const RootStackNavigator = StackNavigator(
-  {
-    Main: {
-      screen: MainTabNavigator,
+    {
+        Main: {
+            screen: MainTabNavigator,
+        },
+
+        UserDetails: {
+            screen: UserDetailsScreen,
+        },
     },
-  },
-  {
-    navigationOptions: () => ({
-      headerTitleStyle: {
-        fontWeight: 'normal',
-      },
-    }),
-  }
+    {
+        navigationOptions: () => ({
+            headerTintColor: '#FFFFFF',
+            headerStyle: {
+                backgroundColor: "#008080"
+            }
+        }),
+    }
 );
 
 export default class RootNavigator extends React.Component {
-  componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
-  }
+    _handleNotification = ({origin, data}) => {
+        console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
+    };
 
-  componentWillUnmount() {
-    this._notificationSubscription && this._notificationSubscription.remove();
-  }
+    componentDidMount() {
+        this._notificationSubscription = this._registerForPushNotifications();
+    }
 
-  render() {
-    return <RootStackNavigator />;
-  }
+    componentWillUnmount() {
+        this._notificationSubscription && this._notificationSubscription.remove();
+    }
 
-  _registerForPushNotifications() {
-    // Send our push token over to our backend so we can receive notifications
-    // You can comment the following line out if you want to stop receiving
-    // a notification every time you open the app. Check out the source
-    // for this function in api/registerForPushNotificationsAsync.js
-    registerForPushNotificationsAsync();
+    render() {
+        return <RootStackNavigator/>;
+    }
 
-    // Watch for incoming notifications
-    this._notificationSubscription = Notifications.addListener(this._handleNotification);
-  }
+    _registerForPushNotifications() {
+        // Send our push token over to our backend so we can receive notifications
+        // You can comment the following line out if you want to stop receiving
+        // a notification every time you open the app. Check out the source
+        // for this function in api/registerForPushNotificationsAsync.js
+        registerForPushNotificationsAsync();
 
-  _handleNotification = ({ origin, data }) => {
-    console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
-  };
+        // Watch for incoming notifications
+        this._notificationSubscription = Notifications.addListener(this._handleNotification);
+    }
 }
