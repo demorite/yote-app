@@ -1,7 +1,7 @@
 import React from 'react';
 import {FlatList, StyleSheet, View,} from 'react-native';
 import {ListItem} from "react-native-elements";
-import FakeUserProvider from "../api/providers/FakeUserProvider";
+import UserProvider from "../../api/providers/UserProvider";
 
 export default class UsersScreen extends React.Component {
     static navigationOptions = ({navigation}) => ({
@@ -16,7 +16,7 @@ export default class UsersScreen extends React.Component {
     async updateUsers() {
         this.setState({refreshing: true});
         try {
-            const users = await FakeUserProvider.getUsers();
+            const users = await UserProvider.getUsers();
             this.setState({users});
         } catch (err) {
             console.log(err)
@@ -41,7 +41,7 @@ export default class UsersScreen extends React.Component {
                     data={users}
                     renderItem={({item}) => <ListItem
                         key={item.id}
-                        title={`${item.name}`}
+                        title={`${item.name} ${item.firstname}`}
                         onPress={() => this.props.navigation.navigate('UserDetails', {user: item})}
                     />}
                 />
@@ -53,7 +53,6 @@ export default class UsersScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: '#fff',
     },
 });

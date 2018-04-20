@@ -3,9 +3,9 @@ import {TabBarBottom, TabNavigator} from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import UsersScreen from '../screens/UsersScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import UsersScreen from '../screens/Users/UsersScreen';
+import BabyFootScreen from '../screens/BabyFoot/BabyFootScreen';
+import MatchesScreen from '../screens/Match/MatchesScreen';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default TabNavigator(
@@ -13,11 +13,11 @@ export default TabNavigator(
         Users: {
             screen: UsersScreen,
         },
-        Links: {
-            screen: LinksScreen,
+        BabyFoots: {
+            screen: BabyFootScreen,
         },
-        Settings: {
-            screen: SettingsScreen,
+        Match: {
+            screen: MatchesScreen,
         },
     },
     {
@@ -29,11 +29,11 @@ export default TabNavigator(
                     case 'Users':
                         iconName = 'md-person';
                         break;
-                    case 'Links':
-                        iconName = 'md-link';
+                    case 'BabyFoots':
+                        iconName = 'md-football';
                         break;
-                    case 'Settings':
-                        iconName = 'md-options';
+                    case 'Match':
+                        iconName = 'md-people';
                 }
                 return (
                     <Ionicons

@@ -4,16 +4,23 @@ import {StackNavigator} from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
-import UserDetailsScreen from "../screens/UserDetailsScreen";
+import UserDetailsScreen from "../screens/Users/UserDetailsScreen";
+import BabyFootDetailsScreen from "../screens/BabyFoot/BabyFootDetailsScreen";
+import MatchDetailsScreen from "../screens/Match/MatchDetailsScreen";
 
 const RootStackNavigator = StackNavigator(
     {
         Main: {
             screen: MainTabNavigator,
         },
-
         UserDetails: {
             screen: UserDetailsScreen,
+        },
+        BabyFootDetails: {
+            screen: BabyFootDetailsScreen,
+        },
+        MatchDetails: {
+            screen: MatchDetailsScreen,
         },
     },
     {

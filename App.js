@@ -1,6 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
-import StatusBar from './components/StatusBar'
+import {Platform, StyleSheet, View, StatusBar} from 'react-native';
 import {AppLoading, Asset, Font} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -45,7 +44,7 @@ export default class App extends React.Component {
         } else {
             return (
                 <View style={styles.container}>
-                    <StatusBar />
+                    <StatusBar barStyle="light-content"/>
                     <RootNavigation/>
                 </View>
             );
