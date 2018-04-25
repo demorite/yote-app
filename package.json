@@ -11,12 +11,16 @@
     "@expo/samples": "2.1.1",
     "expo": "26.0.0",
     "faker": "^4.1.0",
+    "immutable": "^3.8.2",
     "react": "16.3.0-alpha.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
     "react-native-elements": "^0.19.1",
     "react-native-loader": "^1.2.1",
     "react-native-vector-icons": "^4.6.0",
-    "react-navigation": "1.5.10"
+    "react-navigation": "1.5.10",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "jest-expo": "^26.0.0"

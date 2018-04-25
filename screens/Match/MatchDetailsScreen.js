@@ -19,9 +19,9 @@ class MatchDetailsScreen extends React.Component {
 					<Text>&Eacute;quipes</Text>
 				</HorizontalDivider>
 				<Bold>Rouge</Bold>
-				{match.redPlayers.map((p, i) => <Text key={i} > - {`${p.firstname} ${p.name}`}</Text>)}
+				{match.redPlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
 				<Bold>Bleue</Bold>
-				{match.bluePlayers.map((p, i) => <Text key={i} > - {`${p.firstname} ${p.name}`}</Text>)}
+				{match.bluePlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
 				<HorizontalDivider>
 					<Text>BabyFoot</Text>
 				</HorizontalDivider>
