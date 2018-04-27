@@ -1,8 +1,11 @@
 import React from 'react'
-import {Text, View} from "react-native";
+import {ActivityIndicator, ScrollView, Text} from "react-native";
 import {Card} from "react-native-elements";
 import Bold from '../../components/Bold'
 import HorizontalDivider from '../../components/HorizontalDivider'
+import {connect} from "react-redux";
+
+import getSelectedMatch from '../../store/selectors/match/get_selected_match'
 
 class MatchDetailsScreen extends React.Component {
 	static navigationOptions = {
@@ -10,22 +13,24 @@ class MatchDetailsScreen extends React.Component {
 	};
 
 	render() {
-		const {match} = this.props.navigation.state.params;
+		const {match} = this.props;
 
-		return <View>
+		if (!match) return <ActivityIndicator/>;
+
+		return <ScrollView>
 			<Card
 				image={{uri: 'https://picsum.photos/600?random&' + encodeURI(match.place)}}>
 				<HorizontalDivider>
 					<Text>&Eacute;quipes</Text>
 				</HorizontalDivider>
 				<Bold>Rouge</Bold>
-				{match.redPlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
+				{match.redPlayers && match.redPlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
 				<Bold>Bleue</Bold>
-				{match.bluePlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
+				{match.bluePlayers && match.bluePlayers.map((p, i) => <Text key={i}> - {`${p.firstname} ${p.name}`}</Text>)}
 				<HorizontalDivider>
 					<Text>BabyFoot</Text>
 				</HorizontalDivider>
-				<Text><Bold>Lieu : </Bold><Text>{`${match.babyfoot.place}`}</Text></Text>
+				<Text><Bold>Lieu : </Bold><Text>{`${match.babyfoot ? match.babyfoot.place : 'Pas de baby-foot'}`}</Text></Text>
 				<HorizontalDivider>
 					<Text>Informations</Text>
 				</HorizontalDivider>
@@ -35,8 +40,10 @@ class MatchDetailsScreen extends React.Component {
 				<Text><Bold>Score (Rouge - Bleu) : </Bold><Text>{`${match.redScore} - ${match.blueScore}`}</Text></Text>
 				<Text><Bold>Score (Rouge - Bleu) : </Bold><Text>{`${match.redScore} - ${match.blueScore}`}</Text></Text>
 			</Card>
-		</View>;
+		</ScrollView>;
 	}
 }
 
-export default MatchDetailsScreen;
+export default connect((state, props) => ({
+	match: getSelectedMatch(state, props.navigation.state.params.match)
+}))(MatchDetailsScreen);

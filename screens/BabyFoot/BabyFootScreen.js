@@ -1,51 +1,53 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import BabyfootProvider from "../../api/providers/BabyfootProvider";
 import {ListItem} from "react-native-elements";
+import {connect} from "react-redux";
+import getBabyFoots from "../../store/selectors/babyfoot/get_babyfoots";
+import isLoading from "../../store/selectors/babyfoot/is_loading";
+import {fetchAndSubscribeToBabyFoots} from "../../store/actions/babyfoot";
+import {bindActionCreators} from "redux";
 
-export default class BabyFootScreen extends React.Component {
+class BabyFootScreen extends React.Component {
 	static navigationOptions = {
 		title: 'BabyFoots',
 	};
 
-	state = {refreshing: true};
-
-	async updateBabyFoots() {
-		this.setState({refreshing: true});
-		try {
-			const babyFoots = await BabyfootProvider.getBabyfoots();
-			this.setState({babyFoots});
-		} catch (err) {
-			console.log(err);
-		} finally {
-			this.setState({refreshing: false});
-		}
-	};
-
 	componentDidMount() {
-		// noinspection JSIgnoredPromiseFromCall
-		this.updateBabyFoots();
+		this.props.fetchAndSubscribeToBabyFoots();
 	}
 
 	render() {
-		const {refreshing, babyFoots} = this.state;
+		const {babyFoots, isLoading = false, fetchAndSubscribeToBabyFoots} = this.props;
 		return <View style={styles.container}>
-			<FlatList refreshing={refreshing}
-			          onRefresh={this.updateBabyFoots.bind(this)}
-			          data={babyFoots}
+			<FlatList data={babyFoots}
+			          refreshing={isLoading}
+			          onRefresh={() => fetchAndSubscribeToBabyFoots()}
 			          keyExtractor={(item, index) => `${item.id}`}
+			          ListEmptyComponent={() => <ListItem title={"Pas de babyfoot enregistré"}/>}
 			          renderItem={({item}) => <ListItem
 				          key={item.id}
 				          title={item.place}
-				          onPress={() => this.props.navigation.navigate('BabyFootDetails', {babyFoot: item})}
+				          onPress={() => this.props.navigation.navigate('BabyFootDetails', {babyFoot: item.id})}
 			          />}
 			/>
 		</View>;
 	}
 }
 
+const mapStateToProps = (state) => ({
+	babyFoots: getBabyFoots(state),
+	isLoading: isLoading(state)
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+	fetchAndSubscribeToBabyFoots
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(BabyFootScreen)
+
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		backgroundColor: '#fff',
 	},
 });

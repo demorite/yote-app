@@ -1,8 +1,10 @@
 import React from 'react'
-import {Text, View} from "react-native";
+import {ActivityIndicator, ScrollView, Text} from "react-native";
 import {Card} from "react-native-elements";
 import Bold from '../../components/Bold'
 import HorizontalDivider from '../../components/HorizontalDivider'
+import {connect} from "react-redux";
+import getSelectedBabyFoot from "../../store/selectors/babyfoot/get_selected_babyfoot";
 
 class BabyFootDetailsScreen extends React.Component {
 	static navigationOptions = {
@@ -10,9 +12,11 @@ class BabyFootDetailsScreen extends React.Component {
 	};
 
 	render() {
-		const {babyFoot} = this.props.navigation.state.params;
+		const {babyFoot} = this.props;
 
-		return <View>
+		if (!babyFoot) return <ActivityIndicator/>
+
+		return <ScrollView>
 			<Card
 				image={{uri: 'https://picsum.photos/600?random&' + encodeURI(babyFoot.place)}}>
 				<HorizontalDivider>
@@ -22,8 +26,10 @@ class BabyFootDetailsScreen extends React.Component {
 				<Text><Bold>Nombre de joueurs : </Bold><Text>{`${babyFoot.max_players}`}</Text></Text>
 				<Text><Bold>Status : </Bold><Text>{`${babyFoot.state}`}</Text></Text>
 			</Card>
-		</View>;
+		</ScrollView>;
 	}
 }
 
-export default BabyFootDetailsScreen;
+export default connect((state, props) => ({
+	babyFoot: getSelectedBabyFoot(state, props.navigation.state.params.babyFoot)
+}))(BabyFootDetailsScreen);

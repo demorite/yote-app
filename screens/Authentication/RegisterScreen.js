@@ -1,5 +1,5 @@
 import React from "react";
-import {View} from "react-native";
+import {Picker, View} from "react-native";
 import Space from "../../components/Space";
 import {Button, FormInput, FormLabel, FormValidationMessage} from "react-native-elements";
 import LoadingModal from "../../components/LoadingModal";
@@ -15,6 +15,11 @@ class RegisterScreen extends React.Component {
 		const {isLoading, message} = this.state;
 
 		return <View>
+			<FormLabel labelStyle={{color: "teal"}}>Name</FormLabel>
+			<FormInput/>
+			<FormLabel labelStyle={{color: "teal"}}>Firstname</FormLabel>
+			<FormInput/>
+			<FormLabel labelStyle={{color: "teal"}}>Sex</FormLabel>
 			<FormLabel labelStyle={{color: "teal"}}>Username</FormLabel>
 			<FormInput/>
 			<FormLabel labelStyle={{color: "teal"}}>Email</FormLabel>

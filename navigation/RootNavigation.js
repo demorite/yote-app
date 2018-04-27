@@ -10,7 +10,7 @@ import MatchDetailsScreen from "../screens/Match/MatchDetailsScreen";
 import LoginScreen from '../screens/Authentication/LoginScreen'
 import RegisterScreen from '../screens/Authentication/RegisterScreen'
 import {connect} from "react-redux";
-import getUser from "../store/selectors/get_user";
+import getUser from "../store/selectors/auth/get_user";
 
 const RootStackNavigator = StackNavigator(
 	{
@@ -67,6 +67,7 @@ class RootNavigator extends React.Component {
 
 	render() {
 		const {user} = this.props;
+		return <RootStackNavigator/>;
 		if (!user)
 			return <AuthenticationStackNavigator/>;
 		return <RootStackNavigator/>;

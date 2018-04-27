@@ -1,8 +1,10 @@
 import React from 'react'
-import {Text, View} from "react-native";
+import {ActivityIndicator, ScrollView, Text} from "react-native";
 import {Card} from "react-native-elements";
 import Bold from '../../components/Bold'
 import HorizontalDivider from '../../components/HorizontalDivider'
+import {connect} from "react-redux";
+import getSelectedUser from "../../store/selectors/user/get_selected_user";
 
 class UserDetailsScreen extends React.Component {
 	static navigationOptions = {
@@ -13,16 +15,12 @@ class UserDetailsScreen extends React.Component {
 		prenom: 'Dylan'
 	};
 
-	componentDidMount() {
-		this.setState({
-			nom: 'Maxime'
-		})
-	}
-
 	render() {
-		const {user} = this.props.navigation.state.params;
+		const {user} = this.props;
+		
+		if (!user) return <ActivityIndicator/>;
 
-		return <View>
+		return <ScrollView>
 			<Card
 				image={{uri: 'https://picsum.photos/600?random&' + encodeURI(user.username)}}>
 				<HorizontalDivider>
@@ -32,8 +30,14 @@ class UserDetailsScreen extends React.Component {
 				<Text><Bold>Email : </Bold><Text>{`${user.email}`}</Text></Text>
 				<Text><Bold>Sexe : </Bold><Text>{`${user.sex}`}</Text></Text>
 			</Card>
-		</View>;
+		</ScrollView>;
 	}
 }
 
-export default UserDetailsScreen;
+const mapStateToProps = (state, props) => {
+	return ({
+		user: getSelectedUser(state, props.navigation.state.params.user)
+	})
+};
+
+export default connect(mapStateToProps)(UserDetailsScreen);
