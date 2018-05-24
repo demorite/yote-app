@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>New Sails App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+        <link rel="stylesheet" href="bower_components/animate.css/animate.min.css">
+        <link rel="stylesheet" href="/styles/importer.css">
+
+    </head>
+    <body>
+        <% var route = route || null %>
+        <div class="ui menu pointing secondary">
+            <a href="/" class="item <% if( route === 'home' ) { %>active<% } %>">Home</a>
+            <a href="/login" class="item <% if( route === 'login' ) { %>active<% } %>">Login</a>
+            <a href="/register" class="item <% if( route === 'register' ) { %>active<% } %>">Register</a>
+        </div>
+        
+        <div class="ui container">
+            <div class="ui segment">
+                <%- body %>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+        <script src="/dependencies/sails.io.js"></script>
+        <script>
+					$('.ui.dropdown').dropdown();
+					const users_list = $('#users_list');
+
+					function fetchAndListen(entity, callback = null) {
+						io.socket.get(`/${entity}`, callback);
+						io.socket.on(`${entity}`, function () {
+							console.log('entity', entity);
+
+							io.socket.get(`/${entity}`, callback);
+						});
+					}
+
+					let currentUser = null;
+					io.socket.get('/user', function (users) {
+						currentUser = users[Math.floor(Math.random() * users.length)]
+						$(`#message_pseudo`).val(currentUser.name);
+
+					});
+
+					$('#message').on('submit', function (e) {
+						e.preventDefault();
+						$.post('/message', {
+							text: $('#message_input').val(),
+							user: currentUser.id
+						})
+						$('#message_input').val('')
+					});
+
+					function appendMessages(data) {
+						const messages_container = $('#messages');
+						messages_container.html('');
+						data = _.orderBy(data, 'id');
+						data.map(m => messages_container.append($(`<div class="item" style="display: flex; align-items: flex-start"><b>${m.user.username}: </b> <div class="ui content top aligned"> ${m.text}
+</div></div>`)))
+						messages_container.scrollTop(messages_container.height());
+
+					}
+
+					fetchAndListen('message', appendMessages);
+
+					if (users_list.length > 0) {
+						function appendUsers(data, jwres) {
+							users_list.html('');
+							data = _.orderBy(data, 'id');
+							data.map(function (u, index) {
+								users_list.append($(`<div class='ui item animated fadeInUp' style="animation-delay: ${index * 100 / 2}ms" data-user-id='${u.id}'><span><span class='ui label mini circular teal'>${u.id}</span><i class='ui icon ${u.sex === "male" ? 'mars' : u.sex === 'female' ? 'venus' : u.sex === 'both' ? 'transgender' : 'genderless'}'></i>${u.firstname} ${u.name}</span></div>`));
+							})
+						}
+
+						fetchAndListen('user', appendUsers);
+
+					}
+        </script>
+    </body>
+</html>

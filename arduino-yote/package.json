@@ -1,0 +1,13 @@
+{
+  "name": "arduino-yote",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "johnny-five": "^0.14.3",
+    "tfjs-yolo-tiny": "0.0.4"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
