@@ -1,14 +1,14 @@
-import {Notifications} from 'expo';
-import React from 'react';
-import {StackNavigator} from 'react-navigation';
+import {Notifications} from "expo";
+import React from "react";
+import {StackNavigator} from "react-navigation";
 
-import MainTabNavigator from './MainTabNavigator';
-import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import MainTabNavigator from "./MainTabNavigator";
+import registerForPushNotificationsAsync from "../api/registerForPushNotificationsAsync";
 import UserDetailsScreen from "../screens/Users/UserDetailsScreen";
 import BabyFootDetailsScreen from "../screens/BabyFoot/BabyFootDetailsScreen";
 import MatchDetailsScreen from "../screens/Match/MatchDetailsScreen";
-import LoginScreen from '../screens/Authentication/LoginScreen'
-import RegisterScreen from '../screens/Authentication/RegisterScreen'
+import LoginScreen from "../screens/Authentication/LoginScreen";
+import RegisterScreen from "../screens/Authentication/RegisterScreen";
 import {connect} from "react-redux";
 import getUser from "../store/selectors/auth/get_user";
 import {bindActionCreators} from "redux";
@@ -34,12 +34,12 @@ const RootStackNavigator = StackNavigator(
 	},
 	{
 		navigationOptions: () => ({
-			headerTintColor: '#FFFFFF',
+			headerTintColor: "#FFFFFF",
 			headerStyle: {
-				backgroundColor: "#008080"
-			}
+				backgroundColor: "#008080",
+			},
 		}),
-	}
+	},
 );
 
 const AuthenticationStackNavigator = StackNavigator(
@@ -49,17 +49,19 @@ const AuthenticationStackNavigator = StackNavigator(
 	},
 	{
 		navigationOptions: () => ({
-			headerTintColor: '#FFFFFF',
+			headerTintColor: "#FFFFFF",
 			headerStyle: {
-				backgroundColor: "#008080"
-			}
+				backgroundColor: "#008080",
+			},
 		}),
-	}
+	},
 );
 
 class RootNavigator extends React.Component {
 	_handleNotification = ({origin, data}) => {
-		console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
+		console.log(
+			`Push notification ${origin} with data: ${JSON.stringify(data)}`,
+		);
 	};
 
 	componentDidMount() {
@@ -78,9 +80,8 @@ class RootNavigator extends React.Component {
 
 	render() {
 		const {user} = this.props;
-		if (!user)
-			return <AuthenticationStackNavigator/>;
-		return <RootStackNavigator/>;
+		if (!user) return <AuthenticationStackNavigator />;
+		return <RootStackNavigator />;
 	}
 
 	_registerForPushNotifications() {
@@ -91,7 +92,9 @@ class RootNavigator extends React.Component {
 		registerForPushNotificationsAsync();
 
 		// Watch for incoming notifications
-		this._notificationSubscription = Notifications.addListener(this._handleNotification);
+		this._notificationSubscription = Notifications.addListener(
+			this._handleNotification,
+		);
 	}
 }
 
@@ -101,10 +104,14 @@ const mapStateToProps = state => ({
 
 export default connect(
 	mapStateToProps,
-	dispatch => bindActionCreators({
-		fetchAndSubscribeToUsers,
-		isLoggedIn,
-		fetchAndSubscribeToMatches,
-		fetchAndSubscribeToBabyFoots
-	}, dispatch)
+	dispatch =>
+		bindActionCreators(
+			{
+				fetchAndSubscribeToUsers,
+				isLoggedIn,
+				fetchAndSubscribeToMatches,
+				fetchAndSubscribeToBabyFoots,
+			},
+			dispatch,
+		),
 )(RootNavigator);

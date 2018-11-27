@@ -15,6 +15,9 @@
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "sails-socket": "^1.1.0"
+    "sails-socket": "^1.1.0",
+    "merge": ">=1.2.1",
+    "randomatic": ">=3.0.0",
+    "deep-extend": ">=0.5.1"
   }
 }
